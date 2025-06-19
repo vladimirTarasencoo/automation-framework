@@ -15,6 +15,11 @@ Given('I navigate to {page}', async function (this: CustomWorld, pageName: Pages
     } else {
         await page.goto(pageName);
     }
+    await loginPage.clearFields();
+});
+
+When('I click submit', async function (this: CustomWorld) {
+    await loginPage.submitLoginForm();
 });
 
 When('I login incorrect', async function (this: CustomWorld) {
@@ -22,9 +27,15 @@ When('I login incorrect', async function (this: CustomWorld) {
     await loginPage.submitLoginForm();
 });
 
+When('I password incorrect', async function (this: CustomWorld) {
+    await loginPage.enterUsername('student');
+    await loginPage.enterPassword('111');
+    await loginPage.submitLoginForm();
+});
+
 Then('I should see the error message: {string}', async function (this: CustomWorld, message: string) {
-    this.logger.info('💀💀💀 test gonna fail now...');
     await loginPage.checkErrorMessage(message);
+    this.logger.info('💀💀💀 incorrect login/password');
 });
 
 When('I login correct', async function (this: CustomWorld) {
@@ -33,6 +44,13 @@ When('I login correct', async function (this: CustomWorld) {
     await loginPage.submitLoginForm();
 });
 
+
 Then('I should see text: {string}', async function (this: CustomWorld, expectedText: string) {
     await loginPage.verifySuccessTitle(expectedText);
 })
+
+When('I click logout', async function (this: CustomWorld) {
+    await loginPage.logOutClick()
+    await expect(page).toHaveURL('https://practicetestautomation.com/practice-test-login/')
+})
+
