@@ -3,6 +3,7 @@ import {page} from "../../src/support/hooks";
 import {LoginPage} from "../../src/pages/loginPage";
 import {Pages} from "../../src/enums/common.enum";
 import {CustomWorld} from "../../src/support/world";
+import { expect } from 'playwright/test';
 
 let loginPage: LoginPage
 
@@ -25,3 +26,13 @@ Then('I should see the error message: {string}', async function (this: CustomWor
     this.logger.info('💀💀💀 test gonna fail now...');
     await loginPage.checkErrorMessage(message);
 });
+
+When('I login correct', async function (this: CustomWorld) {
+    await loginPage.enterUsername('student');
+    await loginPage.enterPassword('Password123');
+    await loginPage.submitLoginForm();
+});
+
+Then('I should see text: {string}', async function (this: CustomWorld, expectedText: string) {
+    await loginPage.verifySuccessTitle(expectedText);
+})
