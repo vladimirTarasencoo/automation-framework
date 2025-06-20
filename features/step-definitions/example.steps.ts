@@ -54,3 +54,13 @@ When('I click logout', async function (this: CustomWorld) {
     await expect(page).toHaveURL('https://practicetestautomation.com/practice-test-login/')
 })
 
+
+When('I try to log in with {string} and {string}', async function (login: string, password: string) {
+    await loginPage.enterUsername(login);
+    await loginPage.enterPassword(password);
+    await loginPage.submitLoginForm();
+});
+
+Then('I should see the {string}', async function (message: string) {
+    await loginPage.checkErrorMessage(message);
+});
