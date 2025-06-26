@@ -8,6 +8,7 @@ import { expect } from 'playwright/test';
 let loginPage: LoginPage
 
 Given('I navigate to {page}', async function (this: CustomWorld, pageName: Pages) {
+    this.logger.info("going to main page");
     if (pageName == Pages.Login) {
         loginPage = new LoginPage(page);
         await page.goto('https://practicetestautomation.com/practice-test-login/');
@@ -18,49 +19,20 @@ Given('I navigate to {page}', async function (this: CustomWorld, pageName: Pages
     await loginPage.clearFields();
 });
 
-When('I click submit', async function (this: CustomWorld) {
-    await loginPage.submitLoginForm();
+When('I log in as {string} with {string}', async function (this: CustomWorld, login: string, password: string) {
+        await loginPage.enterUsername(login);
+        await loginPage.enterPassword(password);
+        this.logger.info("push the submit");
+        await loginPage.submitLoginForm();
 });
 
-When('I login incorrect', async function (this: CustomWorld) {
-    await loginPage.enterUsername('slcjslcsecd');
-    await loginPage.submitLoginForm();
-});
-
-When('I password incorrect', async function (this: CustomWorld) {
-    await loginPage.enterUsername('student');
-    await loginPage.enterPassword('111');
-    await loginPage.submitLoginForm();
-});
-
-Then('I should see the error message: {string}', async function (this: CustomWorld, message: string) {
-    await loginPage.checkErrorMessage(message);
-    this.logger.info('💀💀💀 incorrect login/password');
-});
-
-When('I login correct', async function (this: CustomWorld) {
-    await loginPage.enterUsername('student');
-    await loginPage.enterPassword('Password123');
-    await loginPage.submitLoginForm();
-});
-
-
-Then('I should see text: {string}', async function (this: CustomWorld, expectedText: string) {
-    await loginPage.verifySuccessTitle(expectedText);
-})
-
-When('I click logout', async function (this: CustomWorld) {
-    await loginPage.logOutClick()
-    await expect(page).toHaveURL('https://practicetestautomation.com/practice-test-login/')
-})
-
-
-When('I try to log in with {string} and {string}', async function (login: string, password: string) {
-    await loginPage.enterUsername(login);
-    await loginPage.enterPassword(password);
-    await loginPage.submitLoginForm();
-});
-
-Then('I should see the {string}', async function (message: string) {
-    await loginPage.checkErrorMessage(message);
+Then('I should see {string}', async function (this: CustomWorld, message: string) {
+    if (message === 'Logged In Successfully') {
+        await loginPage.verifySuccessTitle(message);
+        this.logger.info("successfully logged in");
+        await loginPage.logOutClick()
+    } else {
+        await loginPage.checkErrorMessage(message)
+        this.logger.info("successfully did not logged in with error: " + message);
+    }
 });

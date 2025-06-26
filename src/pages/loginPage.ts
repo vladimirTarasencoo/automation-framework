@@ -21,7 +21,6 @@ export class LoginPage extends BasePage {
         await this.passwordInputLocator.clear();
     }
 
-
     public async enterUsername(usernameText: string) {
         await this.usernameInputLocator.fill(usernameText);
     }

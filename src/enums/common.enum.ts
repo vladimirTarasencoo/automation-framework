@@ -1,4 +1,6 @@
 export enum Pages {
-    Login = 'Login',
-    BlaBlaBla = 'BlaBlaBla',
+    Login = "login",
+    Password = "password",
+    Submit = 'submit',
+    Logout = 'logout'
 }
