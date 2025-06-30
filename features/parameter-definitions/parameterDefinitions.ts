@@ -6,9 +6,3 @@ defineParameterType({
     regexp: /login|password/,
     transformer: (s: string) => s as Pages
 })
-
-defineParameterType({
-    name: 'button',
-    regexp: /submit|logout/,
-    transformer: (s: string) => s as Pages
-})

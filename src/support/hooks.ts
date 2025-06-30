@@ -20,11 +20,12 @@ BeforeAll(async () => {
 
 Before(async function({ pickle }: ITestCaseHookParameter) {
     logger.info('🐱‍👤Starting Scenario: ' + pickle.name);
+    this.page = page;
 });
 
-After(async () => {
-    logger.info('✅Next/Over');
-});
+//After(async () => {
+//    logger.info('✅Next/Over');
+//});
 
 AfterAll(async () => {
     await browser.close();
