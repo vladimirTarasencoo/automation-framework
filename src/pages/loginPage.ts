@@ -1,56 +1,60 @@
 import {BasePage} from "./BasePage";
 import {Page} from "playwright";
-import {expect} from "@playwright/test";
+import {expect, Locator} from "@playwright/test";
+import {testUser} from "../data/userData";
 
 
 export class LoginPage extends BasePage {
-    public titleLocator = this.page.locator('//h2[text()="Test login"]');
-    private usernameInputLocator = this.page.locator('//input[@name="username"]');
-    private submitButtonLocator = this.page.locator('//button[@id="submit"]');
-    private errorMessageLocator = this.page.locator('//div[@id="error"]');
-    private passwordInputLocator = this.page.locator('//input[@id="password"]');
-    private successTitleLocator = this.page.locator('h1.post-title');
-    private logOutLocator = this.page.getByRole('link', { name: 'Log out' });
+    private titleLocator = this.page.locator('//h1[text()="Contact List App"]');
+    private signInButtonLocator = this.page.locator('//*[@id="signup"]');
+    private firstNameInputLocator = this.page.locator('//*[@id="firstName"]');
+    private lastNameInputLocator = this.page.locator('//*[@id="lastName"]');
+    private emailInputLocator = this.page.locator('//*[@id="email"]');
+    private passwordInputLocator = this.page.locator('//*[@id="password"]');
+    private submitButtonLocator = this.page.locator('//*[@id="submit"]');
+    private addContactButtonLocator = this.page.locator('//*[@id="add-contact"]');
+    private deleteContactButtonLocator = this.page.locator('//*[@id="delete"]');
+
+    private buttonLocators: Record<string, Locator> = {
+        delete: this.deleteContactButtonLocator,
+        add: this.addContactButtonLocator,
+        submit: this.submitButtonLocator,
+        signup: this.signInButtonLocator,
+    };
 
     constructor(page: Page) {
         super(page);
     }
 
-    public async clearFields() {
-        await this.usernameInputLocator.clear();
-        await this.passwordInputLocator.clear();
-    }
-
-    public async enterUsername(usernameText: string) {
-        await this.usernameInputLocator.fill(usernameText);
-    }
-
-    public async enterPassword(password: string) {
-        await this.passwordInputLocator.fill(password);
-    }
-
-    public async verifySuccessTitle(expectedText: string) {
-        await expect(this.successTitleLocator).toBeVisible();
-        await expect(this.successTitleLocator).toHaveText(expectedText);
-        //const actualText = await this.successTitle.innerText();
-        //console.log(`expected: "${expectedText}", actual: "${actualText}"`);
-    }
-
-    public async logOutClick() {
-        await this.logOutLocator.click();
-    }
-
-    public async checkPageTitle() {
-        await expect(this.titleLocator).toBeVisible();
-    }
-
-    public async submitLoginForm() {
+    public async enterUserData(skipPassword?: boolean): Promise<void> {
+        await this.firstNameInputLocator.fill(testUser.firstName);
+        await this.lastNameInputLocator.fill(testUser.lastName);
+        await this.emailInputLocator.fill(testUser.email);
+        if (!skipPassword) {
+            await this.passwordInputLocator.fill(testUser.password);
+        }
         await this.submitButtonLocator.click();
     }
 
-    public async checkErrorMessage(expectedMessage: string) {
-        await expect(this.errorMessageLocator).toBeVisible();
-        const actualMessage = await this.errorMessageLocator.textContent();
-        expect(actualMessage).toBe(expectedMessage)
+    public async clickButton(buttonName: string): Promise<void> {
+        const button = this.buttonLocators[buttonName.toLowerCase()];
+        if (!button) {
+            throw new Error(`No button "${buttonName}"`);
+        }
+        await button.click();
+    }
+
+
+    public async signUp(): Promise<void> {
+        await expect(this.titleLocator).toBeVisible();
+        await this.signInButtonLocator.click();
+    }
+
+    public async checkAndDeleteNewContact(): Promise<void> {
+        await this.deleteContactButtonLocator.click();
+    }
+
+    public async pushTheButton(): Promise<void> {
+        await this.addContactButtonLocator.click();
     }
 }
