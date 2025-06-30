@@ -1,10 +1,10 @@
-import {BasePage} from "./BasePage";
+import {Task1BasePage} from "./task1BasePage";
 import {Page} from "playwright";
 import {expect, Locator} from "@playwright/test";
 import {testUser} from "../data/userData";
 
 
-export class LoginPage extends BasePage {
+export class Task1Page extends Task1BasePage {
     private titleLocator = this.page.locator('//h1[text()="Contact List App"]');
     private signInButtonLocator = this.page.locator('//*[@id="signup"]');
     private firstNameInputLocator = this.page.locator('//*[@id="firstName"]');

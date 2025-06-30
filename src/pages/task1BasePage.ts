@@ -2,7 +2,7 @@ import {Page} from "playwright";
 import logger from "../../logger/pino";
 import pino from "pino";
 
-export class BasePage {
+export class Task1BasePage {
     page: Page;
     public logger: pino.Logger;
 
@@ -11,8 +11,8 @@ export class BasePage {
         this.logger = logger;
     }
 
-    async open(path: string) {
-        await this.page.goto(`https://thinking-tester-contact-list.herokuapp.com/${path.toLowerCase()}`);
+    public async refreshPage(): Promise<void> {
+        await this.page.reload();
     }
 }
 
