@@ -7,6 +7,7 @@ import {ContactsList} from "../../src/pages/ContactsList";
 import {ContactCreatePage} from "../../src/pages/ContactCreatePage";
 import {testContacts} from "../../src/data/userData";
 import {ContactPage} from "../../src/pages/ContactPage";
+import {expect} from "@playwright/test";
 
 
 Given("user opens {page} page", async function (this: CustomWorld, pageName: Pages) {
@@ -18,6 +19,9 @@ Given("user opens {page} page", async function (this: CustomWorld, pageName: Pag
 Given("enter with his data", async function (this: CustomWorld) {
     const loginPage = new LoginPage(this.page);
     await loginPage.login();
+    this.logger.info('Login done, current URL: ' + this.page.url());
+    await this.page.waitForURL('**/contactList', { timeout: 10000 });
+    await expect(this.page.locator('//*[@id="logout"]')).toBeVisible({ timeout: 5000 });
 });
 
 Then("user add new contacts", async function () {

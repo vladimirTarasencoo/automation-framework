@@ -23,7 +23,22 @@ export class RegistrationPage extends BasePage {
         await this.lastNameInputLocator.fill(testUser.lastName);
         await this.emailInputLocator.fill(testUser.email);
         await this.passwordInputLocator.fill(testUser.password);
-        await this.submitButtonLocator.click();
-    }
 
+        await this.submitButtonLocator.click();
+
+        try {
+            await Promise.race([
+                this.page.waitForURL('**/contactList', { timeout: 5000 }),
+                this.page.waitForSelector('text=Email address is already in use', { timeout: 5000 }),
+            ]);
+        } catch {
+        }
+        if (this.page.url().includes('/contactList')) {
+            this.logger.info('Регистрация успешна, редирект на /contactList');
+        } else {
+            this.logger.warn('Пользователь уже существует, переходим на страницу логина');
+            await this.page.goto('https://thinking-tester-contact-list.herokuapp.com/');
+            await this.page.locator('//*[@id="email"]').waitFor({ state: 'visible', timeout: 5000 });
+        }
+    }
 }
