@@ -1,6 +1,7 @@
 import {Page} from "playwright";
 import {expect, Locator} from "@playwright/test";
 import {BasePage} from "./BasePage";
+import {testUser} from "../data/userData";
 
 export class RegistrationPage extends BasePage {
     constructor(page: Page) {
@@ -16,4 +17,13 @@ export class RegistrationPage extends BasePage {
     async navigate() {
         await this.open("addUser");
     }
+
+    public async userRegister(): Promise<void> {
+        await this.firstNameInputLocator.fill(testUser.firstName);
+        await this.lastNameInputLocator.fill(testUser.lastName);
+        await this.emailInputLocator.fill(testUser.email);
+        await this.passwordInputLocator.fill(testUser.password);
+        await this.submitButtonLocator.click();
+    }
+
 }

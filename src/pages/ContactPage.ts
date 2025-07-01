@@ -13,4 +13,8 @@ export class ContactPage extends BasePage {
     async navigate() {
         await this.open("contactDetails");
     }
+
+    async deleteContact() {
+        await this.deleteContactButtonLocator.click();
+    }
 }

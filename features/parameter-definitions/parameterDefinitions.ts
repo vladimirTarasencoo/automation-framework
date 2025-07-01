@@ -1,8 +1,9 @@
 import {defineParameterType} from "@cucumber/cucumber";
 import {Pages} from "../../src/enums/common.enum";
+import {ContactCreatePage} from "../../src/pages/ContactCreatePage";
 
 defineParameterType({
     name: "page",
-    regexp: /Login|Registration|Contact|ContactsList/,
+    regexp: /Login|Registration|Contact|List|AddContact|/,
     transformer: (pageName: string) => pageName as Pages
 });

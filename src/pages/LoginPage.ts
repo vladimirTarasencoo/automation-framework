@@ -1,6 +1,7 @@
 import {Page} from "playwright";
 import {expect, Locator} from "@playwright/test";
 import {BasePage} from "./BasePage";
+import {testUser} from "../data/userData";
 
 export class LoginPage extends BasePage {
     constructor(page: Page) {
@@ -13,5 +14,11 @@ export class LoginPage extends BasePage {
 
     async navigate() {
         await this.open("");
+    }
+
+    public async login(): Promise<void> {
+        await this.emailInputLocator.fill(testUser.email);
+        await this.passwordInputLocator.fill(testUser.password);
+        await this.signInButtonLocator.click();
     }
 }
