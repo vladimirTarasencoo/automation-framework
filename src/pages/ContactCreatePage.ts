@@ -22,6 +22,10 @@ export class ContactCreatePage extends BasePage {
         await this.firstNameInputLocator.fill(contact.firstName);
         await this.lastNameInputLocator.fill(contact.lastName);
         await this.emailInputLocator.fill(contact.email);
-        await this.submitButtonLocator.click();
+        await Promise.all([
+            this.page.waitForURL('**/contactList', { timeout: 5000 }), // Ждём переход на список контактов
+            this.submitButtonLocator.click(),
+        ]);
     }
+
 }

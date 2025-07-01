@@ -10,15 +10,17 @@ export class LoginPage extends BasePage {
     private emailInputLocator = this.page.locator('//*[@id="email"]');
     private passwordInputLocator = this.page.locator('//*[@id="password"]');
     private submitButtonLocator = this.page.locator('//*[@id="submit"]');
-    private signInButtonLocator = this.page.locator('//*[@id="signup"]');
+    private signUpButtonLocator = this.page.locator('//*[@id="signup"]');
 
     async navigate() {
         await this.open("");
+        await this.emailInputLocator.waitFor({ state: 'visible', timeout: 5000 });
     }
 
     public async login(): Promise<void> {
         await this.emailInputLocator.fill(testUser.email);
         await this.passwordInputLocator.fill(testUser.password);
-        await this.signInButtonLocator.click();
+        await this.submitButtonLocator.click();
+        await this.page.waitForURL('**/contactList', { timeout: 5000 })
     }
 }

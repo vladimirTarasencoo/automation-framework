@@ -18,12 +18,19 @@ export class ContactsList extends BasePage {
         await this.addContactButtonLocator.click();
     }
 
-    async check(contNum: number) {
-        const contact = testContacts[contNum];
-        const row = this.page.locator(
-            `tr:has-text("${contact.firstName}"):has-text("${contact.lastName}"):has-text("${contact.email}")`
-        ).first();
-        await row.locator('td').first().click();
-
+    async check(index: number): Promise<void> {
+        const contact = testContacts[index];
+        if (!contact) {
+            throw new Error(`No contact ${index} in array`);
+        }
+        const { firstName } = contact;
+        this.logger.info(`Looking for contact ${index} by first name: ${firstName}`);
+        const cellLocator = this.page.locator(`#myTable td`, { hasText: firstName }).first();
+        const isVisible = await cellLocator.isVisible({ timeout: 5000 });
+        if (!isVisible) {
+            throw new Error(`No contact cell with first name: ${firstName}`);
+        }
+        await cellLocator.click();
+        this.logger.info(`Clicked on contact cell with first name: ${firstName}`);
     }
 }

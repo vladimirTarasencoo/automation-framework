@@ -1,4 +1,4 @@
-import {Task1BasePage} from "./task1BasePage";
+import {Task1BasePage} from "./task1BasePage.ts.txt";
 import {Page} from "playwright";
 import {expect, Locator} from "@playwright/test";
 import {testUser} from "../data/userData";
