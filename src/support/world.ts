@@ -3,6 +3,7 @@ import { Page } from '@playwright/test';
 import { IWorldOptions, setWorldConstructor, World } from '@cucumber/cucumber';
 import pino from "pino"; // or playwright-core if you use that
 import logger from '../../logger/pino';
+import {Browser, chromium} from "playwright";
 
 export class CustomWorld extends World {
     //TODO: add more data here
@@ -10,7 +11,15 @@ export class CustomWorld extends World {
 
     logger: pino.Logger = logger;
     page!: Page;
+    browser!: Browser;
 
+    async init() {
+        this.browser = await chromium.launch();
+        this.page = await this.browser.newPage();
+    }
+    async close() {
+        await this.browser.close();
+    }
     constructor(options: IWorldOptions) {
         super(options);
         this.variable = 'hui'

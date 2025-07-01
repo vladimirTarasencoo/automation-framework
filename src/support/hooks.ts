@@ -3,6 +3,8 @@ import {BeforeAll, AfterAll, Before, ITestCaseHookParameter, After} from '@cucum
 import logger from "../../logger/pino";
 // @ts-ignore
 import {pwBrowserConfig} from '../../config/pwProwser';
+import {RegistrationPage} from '../pages/RegistrationPage';
+import {CustomWorld} from "./world";
 
 let browser: ChromiumBrowser;
 let context: BrowserContext;
@@ -12,21 +14,18 @@ declare global {
     const browser: ChromiumBrowser;
 }
 
+Before({timeout: 10000}, async function (this: CustomWorld) {
+    await this.init();
+    const registrationPage = new RegistrationPage(this.page);
+    await registrationPage.userRegister();
+    console.log('User registered');
+});
+
 BeforeAll(async () => {
     browser = await chromium.launch(pwBrowserConfig.browserLaunchOptions);
     context = await browser.newContext();
     page = await context.newPage();
 });
-
-Before(async function({ pickle }: ITestCaseHookParameter) {
-    logger.info('🐱‍👤Starting Scenario: ' + pickle.name);
-    this.page = page;
-});
-
-//After(async () => {
-//    logger.info('✅Next/Over');
-//});
-
 AfterAll(async () => {
     await browser.close();
 });
