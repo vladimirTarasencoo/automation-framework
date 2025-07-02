@@ -15,6 +15,14 @@ export class ContactPage extends BasePage {
     }
 
     async deleteContact() {
+        this.page.once('dialog', async dialog => {
+            if (dialog.type() === 'confirm') {
+                await dialog.accept();
+            } else {
+                await dialog.dismiss();
+            }
+        });
+
         await this.deleteContactButtonLocator.click();
     }
 }
