@@ -1,9 +1,9 @@
-import {Task1BasePage} from "./task1BasePage.ts.txt";
 import {Page} from "playwright";
 import {expect} from "@playwright/test";
+import {BasePage} from "./BasePage";
 
 
-export class Task1LoginPage extends Task1BasePage {
+export class Task1LoginPage extends BasePage {
     public titleLocator = this.page.locator('//h2[text()="Test login"]');
     private usernameInputLocator = this.page.locator('//input[@name="username"]');
     private submitButtonLocator = this.page.locator('//button[@id="submit"]');

@@ -1,10 +1,9 @@
-import {Task1BasePage} from "./task1BasePage.ts.txt";
 import {Page} from "playwright";
 import {expect, Locator} from "@playwright/test";
-import {testUser} from "../data/userData";
+import {BasePage} from "./BasePage";
 
 
-export class Task1Page extends Task1BasePage {
+export class Task1Page extends BasePage {
     private titleLocator = this.page.locator('//h1[text()="Contact List App"]');
     private signInButtonLocator = this.page.locator('//*[@id="signup"]');
     private firstNameInputLocator = this.page.locator('//*[@id="firstName"]');
@@ -27,13 +26,13 @@ export class Task1Page extends Task1BasePage {
     }
 
     public async enterUserData(skipPassword?: boolean): Promise<void> {
-        await this.firstNameInputLocator.fill(testUser.firstName);
-        await this.lastNameInputLocator.fill(testUser.lastName);
-        await this.emailInputLocator.fill(testUser.email);
-        if (!skipPassword) {
-            await this.passwordInputLocator.fill(testUser.password);
-        }
-        await this.submitButtonLocator.click();
+        // await this.firstNameInputLocator.fill(testUser.firstName);
+        // await this.lastNameInputLocator.fill(testUser.lastName);
+        // await this.emailInputLocator.fill(testUser.email);
+        // if (!skipPassword) {
+        //     await this.passwordInputLocator.fill(testUser.password);
+        // }
+        // await this.submitButtonLocator.click();
     }
 
     public async clickButton(buttonName: string): Promise<void> {

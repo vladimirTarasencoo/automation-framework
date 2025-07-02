@@ -1,7 +1,7 @@
 import { chromium, Browser, BrowserContext, Page } from 'playwright';
 import { BeforeAll, AfterAll, Before } from '@cucumber/cucumber';
 import { CustomWorld } from './world';
-import { pwBrowserConfig } from '../../config/pwProwser';
+import {pwBrowserConfig} from "../config/pwProwser";
 
 let browser: Browser;
 let context: BrowserContext;

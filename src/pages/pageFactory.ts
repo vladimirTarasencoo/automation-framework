@@ -8,15 +8,15 @@ import {ContactCreatePage} from "./ContactCreatePage";
 
 export const pageFactory = (page: Page, pageName: Pages) => {
     switch (pageName) {
-        case Pages.Login:
+        case Pages.LOGIN:
             return new LoginPage(page);
-        case Pages.Registration:
+        case Pages.REGISTRATION:
             return new RegistrationPage(page);
-        case Pages.Contact:
+        case Pages.CONTACT:
             return new ContactPage(page);
-        case Pages.List:
+        case Pages.LIST:
             return new ContactsList(page);
-        case Pages.AddContact:
+        case Pages.ADD_CONTACT:
             return new ContactCreatePage(page);
         default:
             throw new Error(`Page ${pageName} not found!`);
