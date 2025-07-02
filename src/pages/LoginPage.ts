@@ -1,7 +1,6 @@
 import {Page} from "playwright";
-import {expect, Locator} from "@playwright/test";
 import {BasePage} from "./BasePage";
-import {testUser} from "../data/userData";
+import {UserData} from "../common/models/UserData";
 
 export class LoginPage extends BasePage {
     constructor(page: Page) {
@@ -17,9 +16,9 @@ export class LoginPage extends BasePage {
         await this.emailInputLocator.waitFor({ state: 'visible', timeout: 5000 });
     }
 
-    public async login(): Promise<void> {
-        await this.emailInputLocator.fill(testUser.email);
-        await this.passwordInputLocator.fill(testUser.password);
+    public async login(user: UserData): Promise<void> {
+        await this.emailInputLocator.fill(user.email);
+        await this.passwordInputLocator.fill(user.password);
         await this.submitButtonLocator.click();
         await this.page.waitForURL('**/contactList', { timeout: 5000 })
     }

@@ -1,7 +1,7 @@
 export enum Pages {
-    Login = "Login",
-    Registration = "Registration",
-    Contact = "Contact",
-    List = "List",
-    AddContact = "AddContact",
+    LOGIN = "Login",
+    REGISTRATION = "Registration",
+    CONTACT = "Contact",
+    LIST = "List",
+    ADD_CONTACT = "AddContact",
 }
