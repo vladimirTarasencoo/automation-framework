@@ -1,6 +1,6 @@
 import {Page} from "playwright";
-import logger from "../../logger/pino";
 import pino from "pino";
+import logger from "../logger/pino";
 
 export class BasePage {
     page: Page;
