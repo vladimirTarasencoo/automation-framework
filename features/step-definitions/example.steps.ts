@@ -8,20 +8,20 @@ import {ContactCreatePage} from "../../src/pages/ContactCreatePage";
 import {testContacts} from "../../src/data/userData";
 import {ContactPage} from "../../src/pages/ContactPage";
 import {expect} from "@playwright/test";
+import {RegistrationPage} from "../../src/pages/RegistrationPage";
 
 
 Given("user opens {page} page", async function (this: CustomWorld, pageName: Pages) {
-    this.logger.info(`Going to ${pageName}`);
+    //this.logger.info(`Going to ${pageName}`);
     const pageObj = pageFactory(this.page, pageName);
     await pageObj.navigate();
 });
 
-Given("enter with his data", async function (this: CustomWorld) {
-    const loginPage = new LoginPage(this.page);
-    await loginPage.login();
-    this.logger.info('Login done, current URL: ' + this.page.url());
-    await this.page.waitForURL('**/contactList', { timeout: 10000 });
-    await expect(this.page.locator('//*[@id="logout"]')).toBeVisible({ timeout: 5000 });
+Then("create new account", async function (this: CustomWorld) {
+    const registrationPage = new RegistrationPage(this.page);
+    await registrationPage.userRegister();
+    await this.page.waitForURL('**/contactList', { timeout: 5000 });
+    await expect(this.page.locator('#logout')).toBeVisible();
 });
 
 Then("user add new contacts", async function () {
@@ -37,4 +37,6 @@ Then("user check added contact", async function () {
 Then ("user delete added contact", async function () {
     const contact = new ContactPage(this.page);
     await contact.deleteContact();
+    const contacts = new ContactsList(this.page);
+    await contacts.checkDeleted(0);
 })

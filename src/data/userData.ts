@@ -1,7 +1,8 @@
 export const testUser = {
     firstName: "dzab",
     lastName: "dzab",
-    email: "dzab@mail.ru",
+    //email: "dzab@mail.ru",
+    email: `qa_user_${Date.now()}@mail.ru`,
     password: "1234567"
 };
 

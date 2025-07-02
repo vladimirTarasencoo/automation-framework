@@ -1,10 +1,8 @@
 Feature: User Navigation with Auth
 
-  # Регистрация 1 раз через хук
-
-  Background:
-    Given user opens Login page
-    And enter with his data
+  Scenario:
+    Given user opens Registration page
+    And create new account
 
   Scenario: View contact list
     Given user opens List page
