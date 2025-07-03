@@ -28,7 +28,7 @@ Feature: User Navigation with Auth
       | FirstName | LastName | DoB        | Email              | Phone      | Address1 | Address2     | City        | SoP        | PostCode | Country |
       | Vlad      | svsese   | 2018-02-02 | vdrvsefc@dsvdr.com | 9998887766 | dvdjhrvd | lkjnvdlkjrnv | Los Angeles | California | 20220    | Cricova |
     Then user checks new records
-    When user delete created contracts
+    When user delete created contacts
 
   @Positive
   Scenario: Check created records can be edited
