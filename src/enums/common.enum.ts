@@ -1,6 +1,7 @@
 export enum Pages {
-    Login = "login",
-    Password = "password",
-    Submit = 'submit',
-    Logout = 'logout'
+    LOGIN = "Login",
+    REGISTRATION = "Registration",
+    CONTACT = "Contact",
+    LIST = "List",
+    ADD_CONTACT = "AddContact",
 }
