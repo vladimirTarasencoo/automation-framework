@@ -12,4 +12,12 @@ export class StringUtils {
     static randomizeUsername() {
         return `user_${this.generateRandomString(10)}`;
     }
+
+    static randomizePassword() {
+        return `pW_${this.generateRandomString(5)}`;
+    }
+
+    static randomizeEmail() {
+        return `${this.generateRandomString(5).toLowerCase()}@mail.com`;
+    }
 }
