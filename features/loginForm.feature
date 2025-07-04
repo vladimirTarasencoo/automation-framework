@@ -12,7 +12,7 @@ Feature: User Navigation with Auth
   @Negative
   Scenario Outline: Check record cannot be created without Firstname or Lastname
     Given user opens AddContact page
-    When user attempts to create contract without '<param>'
+    When user attempts to create contact without '<param>'
     Then '<errorMessage>' message is displayed
 
     Examples:

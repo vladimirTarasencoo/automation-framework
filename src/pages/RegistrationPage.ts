@@ -3,6 +3,7 @@ import {expect} from "@playwright/test";
 import {BasePage} from "./BasePage";
 import {UserData} from "../common/models/UserData";
 import {StringUtils} from "../common/utils/StringUtils";
+import {CustomWorld} from "../support/world";
 
 export class RegistrationPage extends BasePage {
     constructor(page: Page) {
@@ -14,16 +15,29 @@ export class RegistrationPage extends BasePage {
     private passwordInputLocator = this.page.locator('//*[@id="password"]');
     private submitButtonLocator = this.page.locator('//*[@id="submit"]');
     private cancelButtonLocator = this.page.locator('//*[@id="cancel"]');
+    private errorMessage = this.page.locator('//*[@id="error"]');
 
     async navigate() {
         await this.open("addUser");
     }
 
     public async userRegister(user: UserData): Promise<void> {
-        const username = StringUtils.randomizeUsername();
-        const lastname = StringUtils.randomizeUsername();
-        const password = StringUtils.randomizePassword();
-        const email = StringUtils.randomizeEmail();
+        let username: string;
+        let lastname: string;
+        let password: string;
+        let email: string;
+
+        if (user.password === '') {
+            username = StringUtils.randomizeUsername();
+            lastname = StringUtils.randomizeUsername();
+            password = StringUtils.randomizePassword();
+            email = StringUtils.randomizeEmail();
+        } else {
+            username = user.username;
+            lastname = user.lastname;
+            password = user.password;
+            email = user.email;
+        }
 
         user.setUser({
             username: username,
@@ -39,5 +53,20 @@ export class RegistrationPage extends BasePage {
         await this.submitButtonLocator.click();
 
         await expect(this.page.locator('#logout')).toBeVisible();
+    }
+
+    public async registerExistingUser(world: CustomWorld): Promise<void> {
+            const existedUserData: UserData = {
+            username: StringUtils.randomizeUsername(),
+            lastname: StringUtils.randomizeUsername(),
+            password: StringUtils.randomizePassword(),
+            email: world.currentUser.email,
+        } as UserData;
+    }
+
+    public async checkError(errorText: string) {
+        await expect(this.errorMessage).toBeVisible();
+        await expect(this.errorMessage).toContainText(errorText);
+        this.logger.info(`Actual error: ${await this.errorMessage.textContent()}`);
     }
 }
