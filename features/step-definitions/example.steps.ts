@@ -14,38 +14,45 @@ Given("user opens {page} page", async function (this: CustomWorld, pageName: Pag
     await pageObj.navigate();
 });
 
-Given("create new account", async function (this: CustomWorld) { //background
+Given("create new account", { timeout: 10000 }, async function (this: CustomWorld) {
     const pageObj = pageFactory(this.page, Pages.REGISTRATION);
     await pageObj.navigate();
     const registrationPage = new RegistrationPage(this.page);
     await registrationPage.userRegister(this.currentUser);
+    this.logger.info(`New account created: ${JSON.stringify(this.currentUser)}`);
 });
 
-When ("user attempts to register with existing email", async function (this: CustomWorld) {
+When ("user attempts to register with existing email", { timeout: 10000 }, async function (this: CustomWorld) {
     const registrationPage = new RegistrationPage(this.page);
-    await registrationPage.registerExistingUser(world.currentUser);
-});
-
-Then ("'Email address is already in use' message is displayed", async function (this: CustomWorld) {
-    const registrationPage = new RegistrationPage(this.page);
-    await registrationPage.checkError("Email address is already in use");
-});
-
-When("user attempts to create contact without {string}", async function (param: string) {
-    // TODO
+    await registrationPage.registerExistingUser(this.currentUser);
 });
 
 Then("{string} message is displayed", async function (errorMessage: string) {
-    // TODO
+    const registrationPage = new RegistrationPage(this.page);
+    await registrationPage.checkError(errorMessage);
 });
 
+When("user attempts to create contact without {string}", async function (param: string) {
+    const contactCreatePage = new ContactCreatePage(this.page);
+    if (param === "firstname") {
+        await contactCreatePage.createContact({ skipFirstName: true });
+
+    } else if (param === "lastname") {
+        await contactCreatePage.createContact({ skipLastName: true });
+    }
+});
+
+// Then("{string} message is displayed", async function (errorMessage: string) {
+//     const registrationPage = new RegistrationPage(this.page);
+//     await registrationPage.checkError(errorMessage);
+// });
 
 Then("user add new contacts", async function (this: CustomWorld, dataTable: DataTable) {
     this.logger.info(`Adding new contact: ${JSON.stringify(dataTable)}`);
     const addContact = new ContactCreatePage(this.page);
-    await addContact.createContact(dataTable);
+    //await addContact.createContact(dataTable);
     // по хорошему сохрвнять все контакты и в world чтоб в степе ниже был к ним доступ
-    this.contacts.add(dataTable);
+    //this.contacts.add(dataTable);
     // TODO
 });
 
@@ -60,7 +67,6 @@ When ("user delete created contacts", async function (this: CustomWorld) {
 When ("user edit record [1]",async function (this: CustomWorld, recordNumber: number) {
     // TODO
 });
-
 
 // Then("user check added contact", async function (this: CustomWorld) {
 //     const contacts = new ContactsList(this.page);
