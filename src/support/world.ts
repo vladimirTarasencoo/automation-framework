@@ -14,8 +14,8 @@ export class CustomWorld extends World {
 
     constructor(options: IWorldOptions) {
         super(options);
-        this.currentUser = UserData.getInstance();
-        this.currentContact = ContactData.getInstance();
+        this.currentUser = new UserData();
+        this.currentContact = new ContactData();
     }
 }
 

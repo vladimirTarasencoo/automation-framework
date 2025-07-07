@@ -1,5 +1,5 @@
 import { chromium, Browser, BrowserContext, Page } from 'playwright';
-import { BeforeAll, AfterAll, Before } from '@cucumber/cucumber';
+import {BeforeAll, AfterAll, Before, After} from '@cucumber/cucumber';
 import { CustomWorld } from './world';
 import {pwBrowserConfig} from "../config/pwProwser";
 
