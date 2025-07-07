@@ -8,6 +8,6 @@ module.exports = {
     format: ['@cucumber/pretty-formatter'],
     paths: ['features/**/*.feature'],
     requireModule: ['ts-node/register'],
-    parallel: 3
+    parallel: 0
   }
 };

@@ -1,8 +1,8 @@
 export class StringUtils {
     static generateRandomString(length: number) {
-        var result = '';
-        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        var charactersLength = characters.length;
+        let result = '';
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let charactersLength = characters.length;
         for (var i = 0; i < length; i++) {
             result += characters.charAt(Math.floor(Math.random() * charactersLength));
         }
@@ -19,5 +19,14 @@ export class StringUtils {
 
     static randomizeEmail() {
         return `${this.generateRandomString(5).toLowerCase()}@mail.com`;
+    }
+
+    static randomizePhone(): string {
+        const digits = '0123456789';
+        let result = '';
+        for (let i = 0; i < 8; i++) {
+            result += digits.charAt(Math.floor(Math.random() * digits.length));
+        }
+        return result;
     }
 }

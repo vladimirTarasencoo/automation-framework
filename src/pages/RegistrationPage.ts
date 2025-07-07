@@ -4,6 +4,7 @@ import {BasePage} from "./BasePage";
 import {UserData} from "../common/models/UserData";
 import {StringUtils} from "../common/utils/StringUtils";
 import {CustomWorld} from "../support/world";
+import {Pages} from "../enums/common.enum";
 
 export class RegistrationPage extends BasePage {
     constructor(page: Page) {
@@ -15,7 +16,7 @@ export class RegistrationPage extends BasePage {
     private passwordInputLocator = this.page.locator('//*[@id="password"]');
     private submitButtonLocator = this.page.locator('//*[@id="submit"]');
     private cancelButtonLocator = this.page.locator('//*[@id="cancel"]');
-    private errorMessage = this.page.locator('//*[@id="error"]');
+    private errorMessage = this.page.locator('#error')
 
     async navigate() {
         await this.open("addUser");
@@ -55,18 +56,20 @@ export class RegistrationPage extends BasePage {
         await expect(this.page.locator('#logout')).toBeVisible();
     }
 
-    public async registerExistingUser(world: CustomWorld): Promise<void> {
+    public async registerExistingUser(user: UserData): Promise<void> {
             const existedUserData: UserData = {
             username: StringUtils.randomizeUsername(),
             lastname: StringUtils.randomizeUsername(),
             password: StringUtils.randomizePassword(),
-            email: world.currentUser.email,
+            email: user.email,
         } as UserData;
     }
 
-    public async checkError(errorText: string) {
+    public async checkError(errorText: string): Promise<void> {
         await expect(this.errorMessage).toBeVisible();
+        //await this.errorMessage.waitFor({ state: 'visible', timeout: 5000 });
+        const actualText = await this.errorMessage.textContent();
+        this.logger.info(`Actual error: ${actualText}`);
         await expect(this.errorMessage).toContainText(errorText);
-        this.logger.info(`Actual error: ${await this.errorMessage.textContent()}`);
     }
 }
