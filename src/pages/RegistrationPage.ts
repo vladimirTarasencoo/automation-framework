@@ -25,8 +25,8 @@ export class RegistrationPage extends BasePage {
     public async userRegister(user: UserData): Promise<void> {
         let username: string;
         let lastname: string;
-        let password: string;
         let email: string;
+        let password: string;
 
         if (user.password === '') {
             username = StringUtils.randomizeUsername();
@@ -63,13 +63,19 @@ export class RegistrationPage extends BasePage {
             password: StringUtils.randomizePassword(),
             email: user.email,
         } as UserData;
+
+        await this.firstNameInputLocator.fill(existedUserData.username);
+        await this.lastNameInputLocator.fill(existedUserData.lastname);
+        await this.passwordInputLocator.fill(existedUserData.password);
+        await this.emailInputLocator.fill(existedUserData.email);
+        await this.submitButtonLocator.click();
     }
 
     public async checkError(errorText: string): Promise<void> {
         await expect(this.errorMessage).toBeVisible();
-        //await this.errorMessage.waitFor({ state: 'visible', timeout: 5000 });
         const actualText = await this.errorMessage.textContent();
-        this.logger.info(`Actual error: ${actualText}`);
+
         await expect(this.errorMessage).toContainText(errorText);
+        this.logger.info(`Actual error: ${actualText}`);
     }
 }
