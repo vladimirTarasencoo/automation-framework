@@ -4,4 +4,5 @@ export enum Pages {
     CONTACT = "Contact",
     LIST = "List",
     ADD_CONTACT = "AddContact",
+    EDIT = "EditContact",
 }

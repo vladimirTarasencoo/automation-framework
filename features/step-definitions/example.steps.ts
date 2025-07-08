@@ -36,41 +36,41 @@ Then("{string} message is displayed", async function (errorMessage: string) {
 When("user attempts to create contact without {string}", async function (param: string) {
     const contactCreatePage = new ContactCreatePage(this.page);
     if (param === "firstname") {
-        await contactCreatePage.createContact({ skipFirstName: true,testNum:0 });
+        await contactCreatePage.createFakeContacts({skipFirstName: true});
 
     } else if (param === "lastname") {
-        await contactCreatePage.createContact({ skipLastName: true,testNum:0 });
+        await contactCreatePage.createFakeContacts({skipLastName: true});
     }
 });
 
 
-When("user add new contacts", async function (this: CustomWorld, dataTable: DataTable) {
-    this.logger.info(`Adding new contact: ${JSON.stringify(dataTable)}`);
+When("user add new contacts", {timeout: 15000}, async function (this: CustomWorld, dataTable: DataTable) {
+    //this.logger.info(`Adding new contact: ${JSON.stringify(dataTable)}`);
     const contactCreatePage = new ContactCreatePage(this.page);
-    await contactCreatePage.createContact({ testNum:1 });
+    await contactCreatePage.createContacts();
 });
 
-Then ("user checks new records", async function (this: CustomWorld) {
+Then ("user checks new records", {timeout: 10000}, async function (this: CustomWorld) {
+    const pageObj = pageFactory(this.page, Pages.LIST);
+    await pageObj.navigate();
     const contactsList = new ContactsList(this.page);
-    await contactsList.check();
-        // TODO
+    // await contactsList.check([
+    //     this.currentContact.firstname,
+    //     this.currentContact.lastname,
+    //     this.currentContact.email]);
+    await contactsList.check([
+        "Vlad svsese","2018-02-02","vdrvsefc@dsvdr.com"
+    ]);
 });
 
 When ("user delete created contacts", async function (this: CustomWorld) {
-     // TODO
+    const contactPage = new ContactPage(this.page);
+    await contactPage.deleteContact();
 });
 
 
+When ("user edit record [1]",async function (this: CustomWorld, recordNumber: number) {
+    const contactPage = new ContactPage(this.page);
+    await contactPage.editContact()
 
-// When ("user edit record [1]",async function (this: CustomWorld, recordNumber: number) {
-//     // TODO
-// });
-//
-
-
-// // Then ("user delete added contacts", async function () {
-// //     const contact = new ContactPage(this.page);
-// //     await contact.deleteContact();
-// //     const contacts = new ContactsList(this.page);
-// //     await contacts.checkDeleted(0);
-// // })
+});

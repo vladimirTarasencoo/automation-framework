@@ -18,6 +18,8 @@ export const pageFactory = (page: Page, pageName: Pages) => {
             return new ContactsList(page);
         case Pages.ADD_CONTACT:
             return new ContactCreatePage(page);
+        case Pages.EDIT:
+            return new ContactPage(page);
         default:
             throw new Error(`Page ${pageName} not found!`);
     }

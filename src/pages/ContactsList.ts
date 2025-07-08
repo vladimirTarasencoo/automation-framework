@@ -18,34 +18,24 @@ export class ContactsList extends BasePage {
         await this.addContactButtonLocator.click();
     }
 
-    public async check(value1: string, value2: string, value3: string): Promise<boolean> {
+    public async check(values: string[]): Promise<boolean> {
+        await this.page.locator('.contactTableBodyRow').first().waitFor({ state: 'visible' });
         const rows = this.page.locator('tr.contactTableBodyRow');
         const rowCount = await rows.count();
-
+        this.logger.info(`Checking ${rowCount} rows...`);
         for (let i = 0; i < rowCount; i++) {
             const row = rows.nth(i);
-            const cells = row.locator('td');
-            const cellCount = await cells.count();
-
-            let matches = 0;
-
-            for (let j = 0; j < cellCount; j++) {
-                const cellText = (await cells.nth(j).textContent())?.trim() || '';
-
-                if (cellText === value1 || cellText === value2 || cellText === value3) {
-                    matches++;
-                }
-            }
-
-            if (matches >= 3) {
+            const cells = row.locator('td:visible');
+            const cellTexts = await cells.allTextContents();
+            const trimmedTexts = cellTexts.map(text => text.trim());
+            if (values.every(value => trimmedTexts.some(text => text.includes(value)))) {
+                this.logger.info(`Match found in row ${i + 1}`);
+                await cells.first().waitFor({ state: 'attached' });
+                await cells.first().click({ force: true });
                 return true;
             }
         }
+        this.logger.warn('No matching rows found');
         return false;
     }
 }
-        //TODO arbeiten
-
-        // await this.firstNameInputLocator.fill("Vlad");
-        // await this.lastNameInputLocator.fill("svsese");
-        // await this.emailInputLocator.fill("vdrvsefc@dsvdr.com");
