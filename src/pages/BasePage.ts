@@ -13,7 +13,7 @@ export class BasePage {
 
     async open(path: string) {
         this.logger.info(`Going to ${path}`);
-        await this.page.goto(`https://thinking-tester-contact-list.herokuapp.com/${path.toLowerCase()}`);
+        await this.page.goto(`https://thinking-tester-contact-list.herokuapp.com/${path.toLowerCase()}`, { waitUntil: 'domcontentloaded' });
     }
 }
 

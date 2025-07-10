@@ -14,7 +14,7 @@ Given("user opens {page} page", async function (this: CustomWorld, pageName: Pag
     await pageObj.navigate();
 });
 
-Given("create new account", async function (this: CustomWorld) {
+Given("create new account", {timeout: 10000},async function (this: CustomWorld) {
     const pageObj = pageFactory(this.page, Pages.REGISTRATION);
     await pageObj.navigate();
     const registrationPage = new RegistrationPage(this.page);
@@ -44,13 +44,16 @@ When("user attempts to create contact without {string}", async function (param: 
 });
 
 
-When("user add new contacts", {timeout: 15000}, async function (this: CustomWorld, dataTable: DataTable) {
+When("user add new contacts", async function (this: CustomWorld, dataTable: DataTable) {
     //this.logger.info(`Adding new contact: ${JSON.stringify(dataTable)}`);
     const contactCreatePage = new ContactCreatePage(this.page);
-    await contactCreatePage.createContacts();
+    const contacts = dataTable.hashes();
+    for (const contact of contacts) {
+        await contactCreatePage.createContactsFromTable(contact);
+    }
 });
 
-Then ("user checks new records", {timeout: 10000}, async function (this: CustomWorld) {
+Then ("user checks new records", async function (this: CustomWorld) {
     const pageObj = pageFactory(this.page, Pages.LIST);
     await pageObj.navigate();
     const contactsList = new ContactsList(this.page);
