@@ -18,4 +18,3 @@ export class UserData {
         this.email = user.email;
     }
 }
-

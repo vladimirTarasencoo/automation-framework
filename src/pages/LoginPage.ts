@@ -12,8 +12,9 @@ export class LoginPage extends BasePage {
     private signUpButtonLocator = this.page.locator('//*[@id="signup"]');
 
     async navigate() {
-        await this.open("");
-        await this.emailInputLocator.waitFor({ state: 'visible', timeout: 5000 });
+        await this.open();
+        await this.emailInputLocator.waitFor({ state: 'visible', timeout: 10000 });
+        await this.page.waitForLoadState('load')
     }
 
     public async login(user: UserData): Promise<void> {

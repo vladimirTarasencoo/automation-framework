@@ -4,6 +4,12 @@ import {ContactCreatePage} from "../../src/pages/ContactCreatePage";
 
 defineParameterType({
     name: "page",
-    regexp: /Login|Registration|Contact|List|AddContact|/,
+    regexp: /Login|Registration|Contact|List|AddContact/,
     transformer: (pageName: string) => pageName as Pages
+});
+
+defineParameterType({
+    name: 'param',
+    regexp: /firstname|lastname/,
+    transformer: (s) => s,
 });

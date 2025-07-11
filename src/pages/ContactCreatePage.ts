@@ -4,7 +4,6 @@ import {DataTable} from "@cucumber/cucumber";
 import {UserData} from "../common/models/UserData";
 import {StringUtils} from "../common/utils/StringUtils";
 import {expect} from "@playwright/test";
-import {ContactData} from "../common/models/ContactData";
 import {pageFactory} from "./pageFactory";
 import {Pages} from "../enums/common.enum";
 import {ContactsList} from "./ContactsList";
@@ -25,7 +24,7 @@ export class ContactCreatePage extends BasePage {
     private cityInputLocator = this.page.locator('//*[@id="city"]');
     private SoPInputLocator = this.page.locator('//*[@id="stateProvince"]');
     private DoBInputLocator = this.page.locator('//*[@id="birthdate"]');
-    private PCInputLocator  = this.page.locator('//*[@id="postalCode"]');
+    private PCInputLocator = this.page.locator('//*[@id="postalCode"]');
     private countryInputLocator = this.page.locator('//*[@id="country"]');
 
 
@@ -36,7 +35,7 @@ export class ContactCreatePage extends BasePage {
     public async createFakeContacts(options?: {
         skipFirstName?: boolean;
         skipLastName?: boolean;
-        }): Promise<void> {
+    }): Promise<void> {
 
         const skipFirst = options?.skipFirstName ?? false;
         const skipLast = options?.skipLastName ?? false;
@@ -50,57 +49,29 @@ export class ContactCreatePage extends BasePage {
         await this.submitButtonLocator.click();
     }
 
+    public async createContactFromTable(
+        contact: Record<string, string>,
+        returnToAddPage: boolean = false
+    ): Promise<void> {
+        if (contact.FirstName) await this.firstNameInputLocator.fill(contact.FirstName);
+        if (contact.LastName) await this.lastNameInputLocator.fill(contact.LastName);
+        if (contact.Email) await this.emailInputLocator.fill(contact.Email);
+        if (contact.DoB) await this.DoBInputLocator.fill(contact.DoB);
+        if (contact.Phone) await this.phoneInputLocator.fill(contact.Phone);
+        if (contact.Address1) await this.address1InputLocator.fill(contact.Address1);
+        if (contact.Address2) await this.address2InputLocator.fill(contact.Address2);
+        if (contact.City) await this.cityInputLocator.fill(contact.City);
+        if (contact.SoP) await this.SoPInputLocator.fill(contact.SoP);
+        if (contact.PostCode) await this.PCInputLocator.fill(contact.PostCode);
+        if (contact.Country) await this.countryInputLocator.fill(contact.Country);
 
-
-    public async createContactsFromTable(data: Record<string, string>): Promise<void> {
-        await this.firstNameInputLocator.fill(data.FirstName);
-        await this.lastNameInputLocator.fill(data.LastName);
-        await this.emailInputLocator.fill(data.Email);
-        await this.address1InputLocator.fill(data.Address1);
-        await this.address2InputLocator.fill(data.Address2);
-        await this.phoneInputLocator.fill(data.Phone);
-        await this.cityInputLocator.fill(data.City);
-        await this.SoPInputLocator.fill(data.SoP);
-        await this.PCInputLocator.fill(data.PostCode);
-        await this.countryInputLocator.fill(data.Country);
-        await this.DoBInputLocator.fill(data.DoB);
-
+        const currentUrl = this.page.url();
         await this.submitButtonLocator.click();
-    }
+        await this.page.waitForURL(url => url.toString() !== currentUrl);
 
-    // public async createContacts(): Promise<void> {
-    //     await this.firstNameInputLocator.fill("Vlad");
-    //     await this.lastNameInputLocator.fill("svsese");
-    //     await this.emailInputLocator.fill("vdrvsefc@dsvdr.com");
-    //     await this.address1InputLocator.fill("dvdjhrvd");
-    //     await this.address2InputLocator.fill("lkjnvdlkjrnv");
-    //     await this.phoneInputLocator.fill("9998887766");
-    //     await this.cityInputLocator.fill("Los Angeles");
-    //     await this.SoPInputLocator.fill("California");
-    //     await this.PCInputLocator.fill("20220");
-    //     await this.countryInputLocator.fill("Cricova");
-    //     await this.DoBInputLocator.fill("2018-02-02");
-    //
-    //     let contact = new ContactData();
-    //     contact.setContact({
-    //         firstname: "Vlad",
-    //         lastname: "svsese",
-    //         email: "vdrvsefc@dsvdr.com",
-    //     } as ContactData);
-    //
-    //     await this.submitButtonLocator.click();
-    //
-    //     const pageObj = pageFactory(this.page, Pages.ADD_CONTACT);
-    //     await pageObj.navigate();
-    //     await this.cancelButtonLocator.isVisible()
-    //
-    //     await this.firstNameInputLocator.fill("Svse");
-    //     await this.lastNameInputLocator.fill("kjvnsd");
-    //     await this.emailInputLocator.fill("vdrvsefc@dsvdr.com");
-    //     await this.address1InputLocator.fill("dvdjhrvd");
-    //     await this.address2InputLocator.fill("lkjnvdlkjrnv");
-    //     await this.SoPInputLocator.fill("California");
-    //
-    //     await this.submitButtonLocator.click();
-    //     }
+        if (returnToAddPage) {
+            this.logger.info(`Going to creating another contact`);
+            await this.navigate()
+        }
+    }
 }
