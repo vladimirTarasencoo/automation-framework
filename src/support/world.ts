@@ -1,18 +1,22 @@
-// src/support/customWorld.ts
+import {Page, BrowserContext, Browser} from 'playwright';
 import { IWorldOptions, setWorldConstructor, World } from '@cucumber/cucumber';
-import pino from "pino"; // or playwright-core if you use that
-import logger from '../../logger/pino';
+import logger from '../logger/pino';
+import {UserData} from "../common/models/UserData";
 
 export class CustomWorld extends World {
-    //TODO: add more data here
-    variable: string; //you can store here everything you want
+    currentUser: UserData
+    page!: Page;
+    context!: BrowserContext;
+    logger = logger;
+    browser!: Browser;
+    currentContact?: Record<string, string>;
+    createdContacts: Record<string, string>[];
 
     constructor(options: IWorldOptions) {
         super(options);
-        this.variable = 'hui'
+        this.currentUser = new UserData();
+        this.createdContacts = [];
     }
-
-    logger: pino.Logger = logger;
 }
 
 setWorldConstructor(CustomWorld);

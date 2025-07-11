@@ -1,33 +1,24 @@
-import {chromium, Browser, BrowserContext, Page, ChromiumBrowser} from 'playwright';
-import {BeforeAll, AfterAll, Before, ITestCaseHookParameter, After} from '@cucumber/cucumber';
-import logger from "../../logger/pino";
-// @ts-ignore
-import {pwBrowserConfig} from '../../config/pwProwser';
+import { chromium, Browser, BrowserContext, Page } from 'playwright';
+import {BeforeAll, AfterAll, Before, After} from '@cucumber/cucumber';
+import { CustomWorld } from './world';
+import {pwBrowserConfig} from "../config/pwProwser";
 
-let browser: ChromiumBrowser;
+let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-declare global {
-    const browser: ChromiumBrowser;
-}
-
-BeforeAll(async () => {
+BeforeAll(async function () {
     browser = await chromium.launch(pwBrowserConfig.browserLaunchOptions);
     context = await browser.newContext();
     page = await context.newPage();
 });
 
-Before(async function({ pickle }: ITestCaseHookParameter) {
-    logger.info('🐱‍👤Starting Scenario: ' + pickle.name);
-});
-
-After(async () => {
-    logger.info('✅Next/Over');
+Before(async function (this: CustomWorld) {
+    this.browser = browser;
+    this.context = context;
+    this.page = page;
 });
 
 AfterAll(async () => {
     await browser.close();
 });
-
-export { page };

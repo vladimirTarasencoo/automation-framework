@@ -1,6 +1,6 @@
 import {Page} from "playwright";
-import logger from "../../logger/pino";
 import pino from "pino";
+import logger from "../logger/pino";
 
 export class BasePage {
     page: Page;
@@ -11,8 +11,11 @@ export class BasePage {
         this.logger = logger;
     }
 
-    public async refreshPage(): Promise<void> {
-        await this.page.reload();
+    async open(path: string = '/') {
+        this.logger.info(`Going to ${path}`);
+        if (path !== '/' && !path.startsWith('/')) {
+            path = '/' + path;
+        }
+        await this.page.goto(`https://thinking-tester-contact-list.herokuapp.com${path.toLowerCase()}`, { waitUntil: 'domcontentloaded' });
     }
 }
-
