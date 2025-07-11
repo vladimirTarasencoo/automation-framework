@@ -11,9 +11,11 @@ export class BasePage {
         this.logger = logger;
     }
 
-    async open(path: string) {
+    async open(path: string = '/') {
         this.logger.info(`Going to ${path}`);
-        await this.page.goto(`https://thinking-tester-contact-list.herokuapp.com/${path.toLowerCase()}`, { waitUntil: 'domcontentloaded' });
+        if (path !== '/' && !path.startsWith('/')) {
+            path = '/' + path;
+        }
+        await this.page.goto(`https://thinking-tester-contact-list.herokuapp.com${path.toLowerCase()}`, { waitUntil: 'domcontentloaded' });
     }
 }
-

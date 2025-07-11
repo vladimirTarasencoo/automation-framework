@@ -19,23 +19,25 @@ export class ContactsList extends BasePage {
     }
 
     public async check(values: string[]): Promise<boolean> {
-        await this.page.locator('.contactTableBodyRow').first().waitFor({ state: 'visible' });
-        const rows = this.page.locator('tr.contactTableBodyRow');
-        const rowCount = await rows.count();
-        this.logger.info(`Checking ${rowCount} rows...`);
-        for (let i = 0; i < rowCount; i++) {
-            const row = rows.nth(i);
-            const cells = row.locator('td:visible');
-            const cellTexts = await cells.allTextContents();
-            const trimmedTexts = cellTexts.map(text => text.trim());
-            if (values.every(value => trimmedTexts.some(text => text.includes(value)))) {
-                this.logger.info(`Match found in row ${i + 1}`);
-                await cells.first().waitFor({ state: 'attached' });
-                await cells.first().click({ force: true });
+        await this.page.locator('tr.contactTableBodyRow').first().waitFor({ state: 'visible', timeout: 5000 });
+
+        const rows = await this.page.locator('tr.contactTableBodyRow').all();
+        for (const row of rows) {
+            const cellTexts = (await row.locator('td:visible').allTextContents()).map(text => text.trim());
+            const isMatch = values.every(value =>
+                cellTexts.some(cell => cell.includes(value))
+            );
+            if (isMatch) {
                 return true;
             }
         }
-        this.logger.warn('No matching rows found');
         return false;
+    }
+
+    public async openContactByIndex(index: number): Promise<void> {
+        const row = this.page.locator('tr.contactTableBodyRow').nth(index);
+        await row.waitFor({ state: 'visible' });
+        await row.scrollIntoViewIfNeeded();
+        await row.click();
     }
 }
