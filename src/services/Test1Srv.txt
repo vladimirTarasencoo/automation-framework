@@ -1,0 +1,35 @@
+import {Task1Service} from "./Task1Service";
+import {StringUtils} from "../common/utils/StringUtils";
+
+const service = new Task1Service();
+
+const user = {
+    firstname: StringUtils.randomizeUsername(),
+    lastname: StringUtils.randomizeUsername(),
+    email: StringUtils.randomizeEmail(),
+    password: StringUtils.randomizePassword(),
+};
+
+const response = await service.createUser(user);
+console.log('Status:', response.status);
+console.log('Created user:', response.data);
+
+//в example.steps?
+
+(async () => {
+    // login
+    const loginResponse = await service.login({
+        email: 'testuser@example.com',
+        password: '123456'
+    });
+
+    // get token
+    const token = loginResponse.data.token;
+    console.log('Токен:', token);
+
+    // set token
+    service.setToken(token);
+
+    const profileResponse = await service.getUserProfile();
+    console.log('Профиль пользователя:', profileResponse.data);
+})();
