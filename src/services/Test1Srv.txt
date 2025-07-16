@@ -1,7 +1,26 @@
-import {Task1Service} from "./Task1Service";
+import {ContactsService} from "./ContactsService";
 import {StringUtils} from "../common/utils/StringUtils";
 
-const service = new Task1Service();
+
+await this.contactsService.register({
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'john.doe@example.com',
+    password: 'P@ssw0rd123'
+});
+
+await this.contactsService.login({
+    email: this.currentUser.email,
+    password: this.currentUser.password
+});
+
+// Теперь:
+// - this.currentUser.token доступен
+// - Все запросы автоматически с токеном
+// - Можно спокойно вызывать getUserProfile(), updateUser() и т.п.
+
+
+const service = new ContactsService();
 
 const user = {
     firstname: StringUtils.randomizeUsername(),

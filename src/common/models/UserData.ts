@@ -4,13 +4,15 @@ export class UserData {
     password: string;
     email: string;
     token?: string;
+    id: string;
 
     constructor() {
         this.username = "";
         this.lastname = "";
         this.password = "";
         this.email = "";
-        this.token = undefined;
+        this.token = "";
+        this.id = "";
     }
 
     public setUser(user: UserData) {
@@ -19,5 +21,6 @@ export class UserData {
         this.password = user.password;
         this.email = user.email;
         this.token = user.token;
+        this.id = user.id;
     }
 }
