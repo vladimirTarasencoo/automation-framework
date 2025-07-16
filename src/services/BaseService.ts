@@ -54,6 +54,7 @@ export class BaseService {
         return this.api.post<T>(url, data, config);
     }
 
+
     async put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
         return this.api.put<T>(url, data, config);
     }
