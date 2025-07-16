@@ -42,24 +42,23 @@ export class BaseService {
         );
     }
 
-    public setToken(token: string): void {
+    protected setToken(token: string): void {
         this.api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     }
 
-    async get<T = any>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
+    protected async get<T = any>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
         return this.api.get<T>(url, config);
     }
 
-    async post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
+    protected async post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
         return this.api.post<T>(url, data, config);
     }
 
-
-    async put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
+    protected async put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
         return this.api.put<T>(url, data, config);
     }
 
-    async delete<T = any>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
+    protected async delete<T = any>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
         return this.api.delete<T>(url, config);
     }
 }
