@@ -4,6 +4,7 @@ import logger from '../logger/pino';
 import {UserData} from "../common/models/UserData";
 import {ContactsService} from "../services/ContactsService";
 
+
 export class CustomWorld extends World {
     currentUser: UserData
     page!: Page;
