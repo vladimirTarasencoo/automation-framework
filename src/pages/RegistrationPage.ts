@@ -3,8 +3,6 @@ import {expect} from "@playwright/test";
 import {BasePage} from "./BasePage";
 import {UserData} from "../common/models/UserData";
 import {StringUtils} from "../common/utils/StringUtils";
-import {CustomWorld} from "../support/world";
-import {Pages} from "../enums/common.enum";
 
 export class RegistrationPage extends BasePage {
     constructor(page: Page) {

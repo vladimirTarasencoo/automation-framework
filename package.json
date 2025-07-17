@@ -5,7 +5,7 @@
   "author": "vtarasenco <delta4815162342@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@cucumber/cucumber": "^11.3.0",
+    "@cucumber/cucumber": "11.3.0",
     "@cucumber/pretty-formatter": "^1.0.1",
     "@types/cucumber": "^7.0.3",
     "@types/node": "^22.15.29",
