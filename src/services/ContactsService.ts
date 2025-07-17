@@ -1,0 +1,59 @@
+import { BaseService } from './BaseService';
+import { UserData } from '../common/models/UserData';
+
+export class ContactsService extends BaseService {
+    private userDataStore: UserData;
+
+    constructor(userDataStore: UserData) {
+        super('https://thinking-tester-contact-list.herokuapp.com/');
+        this.userDataStore = userDataStore;
+    }
+
+    public async register(userData: {
+        firstName: string;
+        lastName: string;
+        email: string;
+        password: string;
+    }) {
+        const response = await this.post('/addUser', userData);
+        const user = new UserData(); // сохраняем данные пользователя
+        user.username = userData.firstName;
+        user.lastname = userData.lastName;
+        user.email = userData.email;
+        user.password = userData.password;
+        user.token = "";
+        this.userDataStore.setUser(user);
+        return response;
+    }
+
+    public async login(credentials: {
+        email: string;
+        password: string;
+    }) {
+        const response = await this.post('/login', credentials);
+        const token = response.data.token;
+        this.userDataStore.token = token;
+        this.setToken(token); // чтобы axios добавлял токен в заголовки
+        return response;
+    }
+
+    public async getUserProfile() {
+        const response = await this.get('/users/me');
+        const data = response.data;
+
+        this.userDataStore.username = data.firstName; // обновляем userDataStore?
+        this.userDataStore.lastname = data.lastName;
+        this.userDataStore.email = data.email;
+        this.userDataStore.id = data._id;
+
+        return response;
+    }
+
+    // async updateUser(id: string, userData : any) {
+    //     return this.put(`/${id}`, userData);
+    // }
+    //
+    // async deleteUser(id: string) {
+    //     return this.delete(`/${id}`);
+    // }
+}

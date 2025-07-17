@@ -1,0 +1,59 @@
+import {Page} from "playwright";
+import {expect, Locator} from "@playwright/test";
+import {BasePage} from "./BasePage";
+
+
+export class Task1Page extends BasePage {
+    private titleLocator = this.page.locator('//h1[text()="Contact List App"]');
+    private signInButtonLocator = this.page.locator('//*[@id="signup"]');
+    private firstNameInputLocator = this.page.locator('//*[@id="firstName"]');
+    private lastNameInputLocator = this.page.locator('//*[@id="lastName"]');
+    private emailInputLocator = this.page.locator('//*[@id="email"]');
+    private passwordInputLocator = this.page.locator('//*[@id="password"]');
+    private submitButtonLocator = this.page.locator('//*[@id="submit"]');
+    private addContactButtonLocator = this.page.locator('//*[@id="add-contact"]');
+    private deleteContactButtonLocator = this.page.locator('//*[@id="delete"]');
+
+    private buttonLocators: Record<string, Locator> = {
+        delete: this.deleteContactButtonLocator,
+        add: this.addContactButtonLocator,
+        submit: this.submitButtonLocator,
+        signup: this.signInButtonLocator,
+    };
+
+    constructor(page: Page) {
+        super(page);
+    }
+
+    public async enterUserData(skipPassword?: boolean): Promise<void> {
+        // await this.firstNameInputLocator.fill(testUser.firstName);
+        // await this.lastNameInputLocator.fill(testUser.lastName);
+        // await this.emailInputLocator.fill(testUser.email);
+        // if (!skipPassword) {
+        //     await this.passwordInputLocator.fill(testUser.password);
+        // }
+        // await this.submitButtonLocator.click();
+    }
+
+    public async clickButton(buttonName: string): Promise<void> {
+        const button = this.buttonLocators[buttonName.toLowerCase()];
+        if (!button) {
+            throw new Error(`No button "${buttonName}"`);
+        }
+        await button.click();
+    }
+
+
+    public async signUp(): Promise<void> {
+        await expect(this.titleLocator).toBeVisible();
+        await this.signInButtonLocator.click();
+    }
+
+    public async checkAndDeleteNewContact(): Promise<void> {
+        await this.deleteContactButtonLocator.click();
+    }
+
+    public async pushTheButton(): Promise<void> {
+        await this.addContactButtonLocator.click();
+    }
+}

@@ -1,0 +1,54 @@
+import {ContactsService} from "./ContactsService";
+import {StringUtils} from "../common/utils/StringUtils";
+
+
+await this.contactsService.register({
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'john.doe@example.com',
+    password: 'P@ssw0rd123'
+});
+
+await this.contactsService.login({
+    email: this.currentUser.email,
+    password: this.currentUser.password
+});
+
+// Теперь:
+// - this.currentUser.token доступен
+// - Все запросы автоматически с токеном
+// - Можно спокойно вызывать getUserProfile(), updateUser() и т.п.
+
+
+const service = new ContactsService();
+
+const user = {
+    firstname: StringUtils.randomizeUsername(),
+    lastname: StringUtils.randomizeUsername(),
+    email: StringUtils.randomizeEmail(),
+    password: StringUtils.randomizePassword(),
+};
+
+const response = await service.createUser(user);
+console.log('Status:', response.status);
+console.log('Created user:', response.data);
+
+//в example.steps?
+
+(async () => {
+    // login
+    const loginResponse = await service.login({
+        email: 'testuser@example.com',
+        password: '123456'
+    });
+
+    // get token
+    const token = loginResponse.data.token;
+    console.log('Токен:', token);
+
+    // set token
+    service.setToken(token);
+
+    const profileResponse = await service.getUserProfile();
+    console.log('Профиль пользователя:', profileResponse.data);
+})();
