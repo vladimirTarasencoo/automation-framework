@@ -15,7 +15,7 @@ export class ContactsService extends BaseService {
         email: string;
         password: string;
     }) {
-        const response = await this.post('/addUser', userData);
+        const response = await this.post('/users', userData);
         const user = new UserData(); // сохраняем данные пользователя
         user.username = userData.firstName;
         user.lastname = userData.lastName;
@@ -30,7 +30,7 @@ export class ContactsService extends BaseService {
         email: string;
         password: string;
     }) {
-        const response = await this.post('/login', credentials);
+        const response = await this.post('/users/login', credentials);
         const token = response.data.token;
         this.userDataStore.token = token;
         this.setToken(token); // чтобы axios добавлял токен в заголовки
