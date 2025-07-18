@@ -13,6 +13,8 @@ export class CustomWorld extends World {
     currentContact?: Record<string, string>;
     createdContacts: Record<string, string>[];
     contactsService!: ContactsService;
+    apiErrorStatusCode?: number;
+    apiErrorResponse?: any;
 
     constructor(options: IWorldOptions) {
         super(options);
