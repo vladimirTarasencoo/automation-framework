@@ -30,17 +30,13 @@ Before({ tags: '@RegisterUser' }, async function (this: CustomWorld) {
             throw new Error(`Registration failed with status ${res.status}`);
         }
 
-        // await this.contactsService.login({
-        //     email: userData.email,
-        //     password: userData.password
-        // });
-
         Object.assign(this.currentUser, userData);
 
     } catch (error) {
         this.logger.error('Ошибка в хуке @RegisterUser:', error);
         throw error;
     }
+
 });
 
 Before(async function (this: CustomWorld) {

@@ -31,7 +31,7 @@ export class BaseService {
             },
             (error: AxiosError) => { // Обработка ошибки ответа (например, 400, 500)
                 if (error.response) {
-                    console.error(`[RESPONSE ERROR] ${error.response.status}:`, error.response.data);
+                    console.error(`[RESPONSE ERROR] ${error.response.status}: ${JSON.stringify(error.response.data)}`);
                 } else if (error.request) {
                     console.error("[NO RESPONSE]", error.request);
                 } else {
@@ -42,7 +42,9 @@ export class BaseService {
         );
     }
 
-    protected setToken(token: string): void {
+    public setToken(token: string) {
+        this.token = token;
+        console.log('[TOKEN SET]', token);
         this.api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     }
 

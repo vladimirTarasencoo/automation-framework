@@ -18,7 +18,7 @@ export class StringUtils {
     }
 
     static randomizeEmail() {
-        return `${this.generateRandomString(5).toLowerCase()}@mail.com`;
+        return `${this.generateRandomString(6).toLowerCase()}@mail.com`;
     }
 
     static randomizePhone(): string {

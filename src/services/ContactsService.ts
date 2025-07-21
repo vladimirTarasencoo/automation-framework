@@ -1,5 +1,6 @@
-import { BaseService } from './BaseService';
-import { UserData } from '../common/models/UserData';
+import {BaseService} from './BaseService';
+import {UserData} from '../common/models/UserData';
+import {StringUtils} from "../common/utils/StringUtils";
 
 export class ContactsService extends BaseService {
     private userDataStore: UserData;
@@ -25,6 +26,32 @@ export class ContactsService extends BaseService {
         this.userDataStore.setUser(user);
         return response;
     }
+
+    public async tryToCreateErrorContact(param: string) {
+        const data = {
+            firstName: param === "firstname" || param === "both" ? "" : StringUtils.randomizeUsername(),
+            lastName:  param === "lastname"  || param === "both" ? "" : StringUtils.randomizeUsername(),
+        };
+        return await this.post('/contacts', data);
+    }
+
+
+    // public async createContact(contactData: {
+    //     firstName: string;
+    //     lastName: string;
+    //     birthdate: string;
+    //     email: string;
+    //     phone: string;
+    //     street1: string;
+    //     street2: string;
+    //     city: string;
+    //     stateProvince: string;
+    //     postalCode: string;
+    //     country: string;
+    // })
+    // {
+    //     return await this.post('/contacts', contactData);
+    // }
 
     public async login(credentials: {
         email: string;
