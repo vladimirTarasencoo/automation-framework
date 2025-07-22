@@ -17,13 +17,17 @@ export class ContactsService extends BaseService {
         password: string;
     }) {
         const response = await this.post('/users', userData);
-        const user = new UserData(); // сохраняем данные пользователя
+        const token = response.data.token;
+        const user = new UserData();
         user.username = userData.firstName;
         user.lastname = userData.lastName;
         user.email = userData.email;
         user.password = userData.password;
-        user.token = "";
+        user.token = token ?? "";
         this.userDataStore.setUser(user);
+        if (token) {
+            this.setToken(token);
+        }
         return response;
     }
 
@@ -34,7 +38,6 @@ export class ContactsService extends BaseService {
         };
         return await this.post('/contacts', data);
     }
-
 
     // public async createContact(contactData: {
     //     firstName: string;

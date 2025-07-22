@@ -21,11 +21,10 @@ When ("user attempts to register without {string}", async function (field: strin
             password: field === 'password' ? '' : StringUtils.randomizePassword(),
         };
         await this.contactsService.register(userData);
-    }
-        catch (error: any) {
+    } catch (error: any) {
         this.apiErrorStatusCode = error.response?.status;
         this.apiErrorResponse = error.response?.data;
-        this.logger.warn(`[API ERROR] Status: ${this.apiErrorStatusCode}, Message: ${JSON.stringify(this.apiErrorResponse)}`);
+        //this.logger.warn(`[API ERROR] Status: ${this.apiErrorStatusCode}, Message: ${JSON.stringify(this.apiErrorResponse)}`);
     }
 });
 
@@ -41,8 +40,7 @@ When("user attempts to register with existing email", async function (this: Cust
     } catch (error: any) {
         this.apiErrorStatusCode = error.response?.status;
         this.apiErrorResponse = error.response?.data;
-
-        this.logger.warn(`[API ERROR] Status: ${this.apiErrorStatusCode}, Message: ${JSON.stringify(this.apiErrorResponse)}`);
+        //this.logger.warn(`[API ERROR] Status: ${this.apiErrorStatusCode}, Message: ${JSON.stringify(this.apiErrorResponse)}`);
     }
 });
 
@@ -53,31 +51,28 @@ Then("{string} message is displayed", async function (expectedMessage: string) {
     expect(actualMessage).toEqual(expectedMessage); //toEqual toContain
 });
 
-//TODO
 When("user attempts to create contact without {string}", async function (param: string) {
-    this.logger.info(`Attempt to create contact without ${param}`);
-    await this.contactsService.tryToCreateErrorContact(param);
-
-    // const contactCreatePage = new ContactCreatePage(this.page);
-    // if (param === "firstname") {
-    //     await contactCreatePage.createFakeContacts({skipFirstName: true});
-    // } else if (param === "lastname") {
-    //     await contactCreatePage.createFakeContacts({skipLastName: true});
-    // }
-});
-
-When("user add new contacts",{ timeout: 30000 }, async function (this: CustomWorld, dataTable: DataTable) {
-    const contactCreatePage = new ContactCreatePage(this.page);
-    const contacts = dataTable.hashes();
-    this.createdContacts = [];
-    for (let i = 0; i < contacts.length; i++) {
-        const isLast = i === contacts.length - 1;
-        await contactCreatePage.createContactFromTable(contacts[i], !isLast);
-        this.createdContacts.push(contacts[i]);
-        this.logger.info(`Contact ${i} created`);
+    try {
+        this.logger.info(`Attempt to create contact without ${param}`);
+        await this.contactsService.tryToCreateErrorContact(param);
+    } catch (error: any) {
+        this.apiErrorStatusCode = error.response?.status;
+        this.apiErrorResponse = error.response?.data;
+        //this.logger.warn(`[API ERROR] Status: ${this.apiErrorStatusCode}, Message: ${JSON.stringify(this.apiErrorResponse)}`);
     }
 });
 
+
+
+//TODO
+When("user add new contacts", async function (this: CustomWorld, dataTable: DataTable) {
+    const contacts = dataTable.hashes();
+    
+
+});
+
+
+//TODO
 Then("user checks new records", async function (this: CustomWorld) {
     const pageObj = pageFactory(this.page, Pages.LIST);
     await pageObj.navigate();
@@ -94,12 +89,12 @@ Then("user checks new records", async function (this: CustomWorld) {
     }
     this.logger.info(`${foundCount} out of ${this.createdContacts.length} records found`);
 });
-
+//TODO
 When ("user delete created contacts",{ timeout: 15000 }, async function (this: CustomWorld) {
     const contactPage = new ContactPage(this.page);
     await contactPage.deleteContact();
 });
-
+//TODO
 When("user edit record [{int}]",{ timeout: 15000 }, async function (this: CustomWorld, index: number, dataTable: DataTable) {
     const contactList = new ContactsList(this.page);
     const contactPage = new ContactPage(this.page);
