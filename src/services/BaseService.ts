@@ -16,6 +16,7 @@ export class BaseService {
                 console.log(`[REQUEST] ${config.method?.toUpperCase()} ${config.url}`);
                 if (this.token) {
                     config.headers['Authorization'] = `Bearer ${this.token}`;
+                    //console.log(config.headers)
                 }
                 return config;
             },

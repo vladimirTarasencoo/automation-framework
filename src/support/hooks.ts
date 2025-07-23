@@ -21,22 +21,19 @@ Before({ tags: '@RegisterUser' }, async function (this: CustomWorld) {
         email: StringUtils.randomizeEmail(),
         password: StringUtils.randomizePassword()
     };
-
     try {
         const res = await this.contactsService.register(userData);
-
-        if (res.status !== 200 && res.status !== 201) {
+            if (res.status !== 200 && res.status !== 201) {
             this.logger.error(`Ошибка регистрации: статус ${res.status}`);
             throw new Error(`Registration failed with status ${res.status}`);
         }
-
         Object.assign(this.currentUser, userData);
 
     } catch (error) {
         this.logger.error('Ошибка в хуке @RegisterUser:', error);
         throw error;
     }
-
+    //await this.contactsService.getUserProfile();
 });
 
 Before(async function (this: CustomWorld) {

@@ -15,6 +15,7 @@ export class CustomWorld extends World {
     contactsService!: ContactsService;
     apiErrorStatusCode?: number;
     apiErrorResponse?: any;
+    contactIds: string[] = [];
 
     constructor(options: IWorldOptions) {
         super(options);
