@@ -26,7 +26,7 @@ export class ContactCreatePage extends BasePage {
     private DoBInputLocator = this.page.locator('//*[@id="birthdate"]');
     private PCInputLocator = this.page.locator('//*[@id="postalCode"]');
     private countryInputLocator = this.page.locator('//*[@id="country"]');
-
+    returnToListButtonLocator = this.page.locator('//*[@id="return"]');
 
     async navigate() {
         await this.open("addContact");
@@ -48,6 +48,11 @@ export class ContactCreatePage extends BasePage {
         }
         await this.submitButtonLocator.click();
     }
+
+    async returnToList() {
+        await this.returnToListButtonLocator.click();
+    }
+
 
     public async createContactFromTable(
         contact: Record<string, string>,
@@ -74,4 +79,7 @@ export class ContactCreatePage extends BasePage {
             await this.navigate()
         }
     }
+    // public async createContact(): Promise<void> {
+    //
+    // }
 }

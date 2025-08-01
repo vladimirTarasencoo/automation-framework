@@ -23,6 +23,7 @@ Before({ tags: '@RegisterUser' }, async function (this: CustomWorld) {
     };
     try {
         const res = await this.contactsService.register(userData);
+        this.logger.info(`New user registered successfully`);
             if (res.status !== 200 && res.status !== 201) {
             this.logger.error(`Ошибка регистрации: статус ${res.status}`);
             throw new Error(`Registration failed with status ${res.status}`);

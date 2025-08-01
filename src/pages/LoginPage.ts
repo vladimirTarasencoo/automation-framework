@@ -17,10 +17,29 @@ export class LoginPage extends BasePage {
         await this.page.waitForLoadState('load')
     }
 
-    public async login(user: UserData): Promise<void> {
-        await this.emailInputLocator.fill(user.email);
+    public async login(user: UserData, upperCaseMail: boolean, twice: boolean, enter: boolean): Promise<void> {
+
+        if (upperCaseMail) {
+            this.logger.info(`Try to enter with upper case mail`);
+            await this.emailInputLocator.fill(user.email.toUpperCase());
+        } else {
+            await this.emailInputLocator.fill(user.email);
+        }
         await this.passwordInputLocator.fill(user.password);
-        await this.submitButtonLocator.click();
-        await this.page.waitForURL('**/contactList', { timeout: 5000 })
+
+        if (twice && !enter) {
+            await Promise.all([
+                this.submitButtonLocator.click(),
+                this.submitButtonLocator.click(),
+            ]);
+        } else if (!enter) {
+            await this.submitButtonLocator.click();
+        }
+        if (enter) {
+            await this.page.keyboard.press('Enter');
+        }
+
+        await this.page.waitForURL('**/contactList')
+        this.logger.info(`Login successfully`);
     }
 }

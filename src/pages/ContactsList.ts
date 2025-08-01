@@ -8,14 +8,22 @@ export class ContactsList extends BasePage {
     }
 
     private addContactButtonLocator = this.page.locator('//*[@id="add-contact"]');
-    private tableContacts = this.page.locator('//*[@id="myTable"]')
+    private tableContacts = this.page.locator('//*[@id="myTable"]');
+    private tableFirstRow = this.page.locator('//*[@id="myTable"]/tr').first()
+    private logoutButton = this.page.locator('//*[@id="logout"]');
 
     async navigate() {
         await this.open("contactList");
     }
 
+    async logout() {
+        await this.logoutButton.click();
+        await this.page.waitForURL('https://thinking-tester-contact-list.herokuapp.com/');
+    }
+
     async addClick(): Promise<void> {
         await this.addContactButtonLocator.click();
+        await this.page.waitForURL('**/addContact');
     }
 
     public async check(values: string[]): Promise<boolean> {
@@ -39,5 +47,12 @@ export class ContactsList extends BasePage {
         await row.waitFor({ state: 'visible' });
         await row.scrollIntoViewIfNeeded();
         await row.click();
+    }
+
+    async clickTable(): Promise<void> {
+        //if (await this.tableFirstRow.isVisible()) {
+            await this.tableFirstRow.click();
+            await this.page.waitForURL('**/contactDetails');
+        //}
     }
 }

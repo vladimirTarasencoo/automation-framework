@@ -2,6 +2,7 @@ import {Page, BrowserContext, Browser} from 'playwright';
 import { IWorldOptions, setWorldConstructor, World } from '@cucumber/cucumber';
 import logger from '../logger/pino';
 import {UserData} from "../common/models/UserData";
+import {ContactData} from "../common/models/ContactData";
 import {ContactsService} from "../services/ContactsService";
 
 export class CustomWorld extends World {

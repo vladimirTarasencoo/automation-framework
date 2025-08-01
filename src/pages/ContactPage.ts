@@ -7,6 +7,8 @@ export class ContactPage extends BasePage {
         super(page);
     }
 
+    private deleteContactButtonLocator = this.page.locator('//*[@id="delete"]');
+
     async navigate() {
         await this.open("contactDetails");
     }
@@ -47,5 +49,15 @@ export class ContactPage extends BasePage {
         await editButton.waitFor({ state: 'visible' });
         await editButton.click();
         await this.page.waitForURL('**/editContact');
+    }
+
+
+    async clickDeleteButton(): Promise<void> {
+        this.page.once('dialog', async (dialog) => {
+            if (dialog.type() === 'confirm') {
+                await dialog.accept();
+            }
+        });
+        await this.deleteContactButtonLocator.click();
     }
 }
